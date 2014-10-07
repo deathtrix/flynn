@@ -268,6 +268,12 @@ func (c *Client) ProvisionResource(req *ct.ResourceReq) (*ct.Resource, error) {
 	return res, err
 }
 
+func (c *Client) GetResource(providerID, resourceID string) (*ct.Resource, error) {
+	res := &ct.Resource{}
+	err := c.get(fmt.Sprintf("/providers/%s/resources/%s", providerID, resourceID), res)
+	return res, err
+}
+
 // PutResource updates a resource.
 func (c *Client) PutResource(resource *ct.Resource) error {
 	if resource.ID == "" || resource.ProviderID == "" {
