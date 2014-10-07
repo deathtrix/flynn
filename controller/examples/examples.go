@@ -43,7 +43,8 @@ func main() {
 		resourceIds: make(map[string]string),
 	}
 
-	go e.listenAndServe()
+	providerLog := log.New(os.Stdout, "provider", 1)
+	go e.listenAndServe(providerLog)
 
 	examples := []example{
 		{"key_create", e.createKey},
@@ -104,9 +105,10 @@ func main() {
 	encoder.Encode(res)
 }
 
-func (e *generator) listenAndServe() {
+func (e *generator) listenAndServe(l *log.Logger) {
+	l.Println("listenAndServe...")
 	http.HandleFunc("/providers/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("GET /providers\n")
+		l.Printf("GET /providers\n")
 		w.WriteHeader(200)
 	})
 
