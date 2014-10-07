@@ -465,6 +465,11 @@ func (c *Client) KeyList() ([]*ct.Key, error) {
 	return keys, c.get("/keys", &keys)
 }
 
+func (c *Client) ArtifactList() ([]*ct.Artifact, error) {
+	var artifacts []*ct.Artifact
+	return artifacts, c.get("/artifacts", &artifacts)
+}
+
 // CreateKey uploads pubKey as the ssh public key.
 func (c *Client) CreateKey(pubKey string) (*ct.Key, error) {
 	key := &ct.Key{}
