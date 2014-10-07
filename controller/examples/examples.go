@@ -43,7 +43,7 @@ func main() {
 		resourceIds: make(map[string]string),
 	}
 
-	providerLog := log.New(os.Stdout, "provider", 1)
+	providerLog := log.New(os.Stdout, "provider: ", 1)
 	go e.listenAndServe(providerLog)
 
 	examples := []example{
@@ -62,10 +62,10 @@ func main() {
 		{"provider_create", e.createProvider},
 		{"provider_get", e.getProvider},
 		{"provider_list", e.listProviders},
-		{"provider_resource_create", e.createProviderResource},
-		{"provider_resource_get", e.getProviderResource},
-		{"provider_resource_update", e.updateProviderResource},
-		{"provider_resource_list", e.listProviderResources},
+		// {"provider_resource_create", e.createProviderResource},
+		// {"provider_resource_get", e.getProviderResource},
+		// {"provider_resource_update", e.updateProviderResource},
+		// {"provider_resource_list", e.listProviderResources},
 		{"app_delete", e.deleteApp},
 	}
 
