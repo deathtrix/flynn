@@ -37,7 +37,7 @@ func NewClient(uri, key string) (*Client, error) {
 	c := &Client{
 		url:  uri,
 		addr: u.Host,
-		http: http.DefaultClient,
+		HTTP: http.DefaultClient,
 		key:  key,
 	}
 	if u.Scheme == "discoverd+http" {
@@ -47,7 +47,7 @@ func NewClient(uri, key string) (*Client, error) {
 		dialer := dialer.New(discoverd.DefaultClient, nil)
 		c.dial = dialer.Dial
 		c.dialClose = dialer
-		c.http = &http.Client{Transport: &http.Transport{Dial: c.dial}}
+		c.HTTP = &http.Client{Transport: &http.Transport{Dial: c.dial}}
 		u.Scheme = "http"
 		c.url = u.String()
 	}
@@ -70,7 +70,7 @@ func NewClientWithPin(uri, key string, pin []byte) (*Client, error) {
 	c.addr = u.Host
 	u.Scheme = "http"
 	c.url = u.String()
-	c.http = &http.Client{Transport: &http.Transport{Dial: c.dial}}
+	c.HTTP = &http.Client{Transport: &http.Transport{Dial: c.dial}}
 	return c, nil
 }
 
@@ -79,7 +79,7 @@ type Client struct {
 	url  string
 	key  string
 	addr string
-	http *http.Client
+	HTTP *http.Client
 
 	dial      rpcplus.DialFunc
 	dialClose io.Closer
@@ -127,7 +127,7 @@ func (c *Client) rawReq(method, path string, header http.Header, in, out interfa
 	}
 	req.Header = header
 	req.SetBasicAuth("", c.key)
-	res, err := c.http.Do(req)
+	res, err := c.HTTP.Do(req)
 	if err != nil {
 		return nil, err
 	}
