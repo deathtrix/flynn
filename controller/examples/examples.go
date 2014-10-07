@@ -159,12 +159,13 @@ func (e *generator) listApps() {
 
 func (e *generator) updateApp() {
 	app := &ct.App{
+		ID:   e.resourceIds["app"],
 		Name: "my-app",
 		Meta: map[string]string{
 			"bread": "with hemp",
 		},
 	}
-	e.client.CreateApp(app)
+	e.client.UpdateApp(app)
 }
 
 func (e *generator) deleteApp() {
