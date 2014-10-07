@@ -471,6 +471,11 @@ func (c *Client) CreateKey(pubKey string) (*ct.Key, error) {
 	return key, c.post("/keys", &ct.Key{Key: pubKey}, key)
 }
 
+func (c *Client) GetKey(keyID string) (*ct.Key, error) {
+	key := &ct.Key{}
+	return key, c.get(fmt.Sprintf("/keys/%s", keyID), key)
+}
+
 // DeleteKey deletes a key with the specified id.
 func (c *Client) DeleteKey(id string) error {
 	return c.delete("/keys/" + strings.Replace(id, ":", "", -1))
