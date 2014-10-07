@@ -242,6 +242,13 @@ func (c *Client) CreateApp(app *ct.App) error {
 	return c.post("/apps", app, app)
 }
 
+func (c *Client) UpdateApp(app *ct.App) error {
+	if app.ID == "" {
+		return errors.New("controller: midding id")
+	}
+	return c.post(fmt.Sprintf("/apps/%s", app.ID), app, app)
+}
+
 // DeleteApp deletes an app.
 func (c *Client) DeleteApp(appID string) error {
 	return c.delete(fmt.Sprintf("/apps/%s", appID))
