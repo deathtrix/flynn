@@ -68,7 +68,6 @@ func main() {
 		{"app_delete", e.deleteApp},
 	}
 
-	// TODO: Use client lib
 	// TODO: POST /apps/:app_id/routes
 	// TODO: GET /apps/:app_id/routes
 	// TODO: GET /apps/:app_id/routes/:routes_type/:routes_id
