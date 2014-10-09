@@ -12,6 +12,7 @@ import (
 
 	cc "github.com/flynn/flynn/controller/client"
 	ct "github.com/flynn/flynn/controller/types"
+	"github.com/flynn/flynn/discoverd/client"
 )
 
 type generator struct {
@@ -217,10 +218,14 @@ func (e *generator) listReleases() {
 func (e *generator) createProvider() {
 	t := time.Now().UnixNano()
 	provider := &ct.Provider{
-		Name: fmt.Sprintf("example provider %d", t),
-		URL:  fmt.Sprintf("discoverd+http://%s/providers/%d", net.JoinHostPort(e.conf.ourAddr, e.conf.ourPort), t),
+		Name: fmt.Sprintf("example-provider-%d", t),
+		URL:  fmt.Sprintf("discoverd+http://example-provider-%d/providers/%d", t, t),
 	}
 	err := e.client.CreateProvider(provider)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = discoverd.Register(provider.Name, net.JoinHostPort(e.conf.ourAddr, e.conf.ourPort))
 	if err != nil {
 		log.Fatal(err)
 	}
