@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -114,7 +115,11 @@ func main() {
 func (e *generator) listenAndServe(l *log.Logger) {
 	l.Println("listenAndServe...")
 	http.HandleFunc("/providers/", func(w http.ResponseWriter, r *http.Request) {
-		l.Printf("GET /providers\n")
+		l.Printf("%s %s\n", r.Method, r.URL)
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(r.Body)
+		body := buf.String()
+		l.Printf("\t%s\n", body)
 		w.WriteHeader(200)
 	})
 
