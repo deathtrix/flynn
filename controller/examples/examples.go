@@ -32,6 +32,11 @@ func main() {
 		log.Fatal(err)
 	}
 
+	err = discoverd.Connect(conf.controllerDomain + ":1111")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	client, err = cc.NewClient("http://"+conf.controllerDomain, conf.controllerKey)
 	if err != nil {
 		log.Fatal(err)
