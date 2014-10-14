@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"time"
 
 	cc "github.com/flynn/flynn/controller/client"
 	ct "github.com/flynn/flynn/controller/types"
+	"github.com/flynn/flynn/discoverd/client"
 )
 
 type generator struct {
@@ -141,7 +143,8 @@ func (e *generator) deleteKey() {
 }
 
 func (e *generator) createApp() {
-	app := &ct.App{Name: "my-app"}
+	t := time.Now().UnixNano()
+	app := &ct.App{Name: fmt.Sprintf("my-app-%d", t)}
 	err := e.client.CreateApp(app)
 	if err == nil {
 		e.resourceIds["app"] = app.ID
@@ -158,8 +161,7 @@ func (e *generator) listApps() {
 
 func (e *generator) updateApp() {
 	app := &ct.App{
-		ID:   e.resourceIds["app"],
-		Name: "my-app",
+		ID: e.resourceIds["app"],
 		Meta: map[string]string{
 			"bread": "with hemp",
 		},
@@ -217,9 +219,13 @@ func (e *generator) createProvider() {
 	t := time.Now().UnixNano()
 	provider := &ct.Provider{
 		Name: fmt.Sprintf("example-provider-%d", t),
-		URL:  fmt.Sprintf("http://example-provider-%d/providers/%d", t, t),
+		URL:  fmt.Sprintf("discoverd+http://example-provider-%d/providers/%d", t, t),
 	}
 	err := e.client.CreateProvider(provider)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = discoverd.Register(provider.Name, net.JoinHostPort(e.conf.ourAddr, e.conf.ourPort))
 	if err != nil {
 		log.Fatal(err)
 	}
