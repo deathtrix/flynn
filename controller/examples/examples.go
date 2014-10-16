@@ -14,6 +14,7 @@ import (
 	cc "github.com/flynn/flynn/controller/client"
 	ct "github.com/flynn/flynn/controller/types"
 	"github.com/flynn/flynn/discoverd/client"
+	"github.com/flynn/flynn/pkg/resource"
 )
 
 type generator struct {
@@ -120,7 +121,18 @@ func (e *generator) listenAndServe(l *log.Logger) {
 		buf.ReadFrom(r.Body)
 		body := buf.String()
 		l.Printf("\t%s\n", body)
-		w.WriteHeader(200)
+
+		resource := &resource.Resource{}
+		res, err := json.Marshal(resource)
+		if err != nil {
+			l.Println(err)
+			w.WriteHeader(500)
+			return
+		}
+		_, err = w.Write(res)
+		if err != nil {
+			l.Println(err)
+		}
 	})
 
 	http.ListenAndServe(":"+e.conf.ourPort, nil)
