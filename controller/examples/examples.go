@@ -72,7 +72,6 @@ func main() {
 		{"provider_list", e.listProviders},
 		{"provider_resource_create", e.createProviderResource},
 		{"provider_resource_get", e.getProviderResource},
-		{"provider_resource_update", e.updateProviderResource},
 		{"provider_resource_list", e.listProviderResources},
 		{"app_delete", e.deleteApp},
 	}
@@ -277,14 +276,6 @@ func (e *generator) getProviderResource() {
 	providerID := e.resourceIds["provider"]
 	resourceID := e.resourceIds["provider_resource"]
 	e.client.GetResource(providerID, resourceID)
-}
-
-func (e *generator) updateProviderResource() {
-	resource := &ct.Resource{
-		ID:         e.resourceIds["provider_resource"],
-		ProviderID: e.resourceIds["provider"],
-	}
-	e.client.PutResource(resource)
 }
 
 func (e *generator) listProviderResources() {
