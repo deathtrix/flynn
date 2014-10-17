@@ -64,6 +64,7 @@ func main() {
 		{"app_get", e.getApp},
 		{"app_list", e.listApps},
 		{"app_update", e.updateApp},
+		{"app_resource_list", e.listAppResources},
 		{"route_create", e.createRoute},
 		{"route_get", e.getRoute},
 		{"route_list", e.listRoutes},
@@ -81,7 +82,6 @@ func main() {
 		{"app_delete", e.deleteApp},
 	}
 
-	// TODO: GET /apps/:app_id/resources
 	// TODO: PUT /apps/:app_id/release
 	// TODO: GET /apps/:app_id/release
 	// TODO: PUT /apps/:app_id/formatinos/:release_id
@@ -189,6 +189,10 @@ func (e *generator) updateApp() {
 		},
 	}
 	e.client.UpdateApp(app)
+}
+
+func (e *generator) listAppResources() {
+	e.client.AppResourceList(e.resourceIds["app"])
 }
 
 func (e *generator) createRoute() {
