@@ -15,6 +15,7 @@ import (
 	ct "github.com/flynn/flynn/controller/types"
 	"github.com/flynn/flynn/discoverd/client"
 	"github.com/flynn/flynn/pkg/resource"
+	"github.com/flynn/flynn/router/types"
 )
 
 type generator struct {
@@ -63,6 +64,10 @@ func main() {
 		{"app_get", e.getApp},
 		{"app_list", e.listApps},
 		{"app_update", e.updateApp},
+		{"route_create", e.createRoute},
+		{"route_get", e.getRoute},
+		{"route_list", e.listRoutes},
+		{"route_delete", e.deleteRoute},
 		{"artifact_create", e.createArtifact},
 		{"release_create", e.createRelease},
 		{"artifact_list", e.listArtifacts},
@@ -76,10 +81,6 @@ func main() {
 		{"app_delete", e.deleteApp},
 	}
 
-	// TODO: POST /apps/:app_id/routes
-	// TODO: GET /apps/:app_id/routes
-	// TODO: GET /apps/:app_id/routes/:routes_type/:routes_id
-	// TODO: DELETE /apps/:app_id/routes/:routes_type/:routes_id
 	// TODO: GET /apps/:app_id/resources
 	// TODO: PUT /apps/:app_id/release
 	// TODO: GET /apps/:app_id/release
@@ -188,6 +189,32 @@ func (e *generator) updateApp() {
 		},
 	}
 	e.client.UpdateApp(app)
+}
+
+func (e *generator) createRoute() {
+	config := json.RawMessage(`{
+    "domain": "http://example.com"
+  }`)
+	route := &router.Route{
+		Type:   "http",
+		Config: &config,
+	}
+	err := e.client.CreateRoute(e.resourceIds["app"], route)
+	if err == nil {
+		e.resourceIds["route"] = route.ID
+	}
+}
+
+func (e *generator) getRoute() {
+	e.client.GetRoute(e.resourceIds["app"], e.resourceIds["route"])
+}
+
+func (e *generator) listRoutes() {
+	e.client.RouteList(e.resourceIds["app"])
+}
+
+func (e *generator) deleteRoute() {
+	e.client.DeleteRoute(e.resourceIds["app"], e.resourceIds["route"])
 }
 
 func (e *generator) deleteApp() {
