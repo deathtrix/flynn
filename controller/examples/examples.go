@@ -84,10 +84,10 @@ func main() {
 
 	// TODO: PUT /apps/:app_id/release
 	// TODO: GET /apps/:app_id/release
-	// TODO: PUT /apps/:app_id/formatinos/:release_id
-	// TODO: GET /apps/:app_id/formatinos/:release_id
-	// TODO: DELETE /apps/:app_id/formatinos/:release_id
-	// TODO: GET /apps/:app_id/formatinos
+	// TODO: PUT /apps/:app_id/formations/:release_id
+	// TODO: GET /apps/:app_id/formations/:release_id
+	// TODO: DELETE /apps/:app_id/formations/:release_id
+	// TODO: GET /apps/:app_id/formations
 	// TODO: POST /apps/:app_id/jobs
 	// TODO: PUT /apps/:app_id/jobs/:job_id
 	// TODO: DELETE /apps/:app_id/jobs/:job_id
