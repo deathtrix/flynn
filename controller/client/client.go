@@ -286,6 +286,11 @@ func (c *Client) ResourceList(providerID string) ([]*ct.Resource, error) {
 	return resources, c.get(fmt.Sprintf("/providers/%s/resources", providerID), &resources)
 }
 
+func (c *Client) AppResourceList(appID string) ([]*ct.Resource, error) {
+	var resources []*ct.Resource
+	return resources, c.get(fmt.Sprintf("/apps/%s/resources", appID), &resources)
+}
+
 // PutResource updates a resource.
 func (c *Client) PutResource(resource *ct.Resource) error {
 	if resource.ID == "" || resource.ProviderID == "" {
