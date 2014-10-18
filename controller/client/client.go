@@ -365,6 +365,10 @@ func (c *Client) ListFormations(appID string) ([]*ct.Formation, error) {
 	return formations, c.get(fmt.Sprintf("/apps/%s/formations", appID), &formations)
 }
 
+func (c *Client) DeleteFormation(appID, releaseID string) error {
+	return c.delete(fmt.Sprintf("/apps/%s/formations/%s", appID, releaseID))
+}
+
 // GetRelease returns details for the specified release.
 func (c *Client) GetRelease(releaseID string) (*ct.Release, error) {
 	release := &ct.Release{}
