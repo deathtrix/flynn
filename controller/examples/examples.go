@@ -75,6 +75,10 @@ func main() {
 		{"release_list", e.listReleases},
 		{"app_release_set", e.setAppRelease},
 		{"app_release_get", e.getAppRelease},
+		{"formation_put", e.putFormation},
+		{"formation_get", e.getFormation},
+		{"formation_list", e.listFormations},
+		{"formation_delete", e.deleteFormation},
 		{"provider_create", e.createProvider},
 		{"provider_get", e.getProvider},
 		{"provider_list", e.listProviders},
@@ -84,10 +88,6 @@ func main() {
 		{"app_delete", e.deleteApp},
 	}
 
-	// TODO: PUT /apps/:app_id/formations/:release_id
-	// TODO: GET /apps/:app_id/formations/:release_id
-	// TODO: DELETE /apps/:app_id/formations/:release_id
-	// TODO: GET /apps/:app_id/formations
 	// TODO: POST /apps/:app_id/jobs
 	// TODO: PUT /apps/:app_id/jobs/:job_id
 	// TODO: DELETE /apps/:app_id/jobs/:job_id
@@ -281,6 +281,29 @@ func (e *generator) getAppRelease() {
 
 func (e *generator) setAppRelease() {
 	e.client.SetAppRelease(e.resourceIds["app"], e.resourceIds["release"])
+}
+
+func (e *generator) putFormation() {
+	formation := &ct.Formation{
+		AppID:     e.resourceIds["app"],
+		ReleaseID: e.resourceIds["release"],
+		Processes: map[string]int{
+			"foo": 1,
+		},
+	}
+	e.client.PutFormation(formation)
+}
+
+func (e *generator) getFormation() {
+	e.client.GetFormation(e.resourceIds["app"], e.resourceIds["release"])
+}
+
+func (e *generator) listFormations() {
+	e.client.ListFormations(e.resourceIds["app"])
+}
+
+func (e *generator) deleteFormation() {
+	e.client.DeleteFormation(e.resourceIds["app"], e.resourceIds["release"])
 }
 
 func (e *generator) createProvider() {
