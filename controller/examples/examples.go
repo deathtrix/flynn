@@ -109,8 +109,16 @@ func main() {
 	} else {
 		out = os.Stdout
 	}
-	encoder := json.NewEncoder(out)
-	encoder.Encode(res)
+	data, err := json.Marshal(res)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var formatted bytes.Buffer
+	err = json.Indent(&formatted, data, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+	formatted.WriteTo(out)
 }
 
 func (e *generator) listenAndServe(l *log.Logger) {
