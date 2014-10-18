@@ -73,6 +73,8 @@ func main() {
 		{"release_create", e.createRelease},
 		{"artifact_list", e.listArtifacts},
 		{"release_list", e.listReleases},
+		{"app_release_set", e.setAppRelease},
+		{"app_release_get", e.getAppRelease},
 		{"provider_create", e.createProvider},
 		{"provider_get", e.getProvider},
 		{"provider_list", e.listProviders},
@@ -82,8 +84,6 @@ func main() {
 		{"app_delete", e.deleteApp},
 	}
 
-	// TODO: PUT /apps/:app_id/release
-	// TODO: GET /apps/:app_id/release
 	// TODO: PUT /apps/:app_id/formations/:release_id
 	// TODO: GET /apps/:app_id/formations/:release_id
 	// TODO: DELETE /apps/:app_id/formations/:release_id
@@ -273,6 +273,14 @@ func (e *generator) createRelease() {
 
 func (e *generator) listReleases() {
 	e.client.ReleaseList()
+}
+
+func (e *generator) getAppRelease() {
+	e.client.GetAppRelease(e.resourceIds["app"])
+}
+
+func (e *generator) setAppRelease() {
+	e.client.SetAppRelease(e.resourceIds["app"], e.resourceIds["release"])
 }
 
 func (e *generator) createProvider() {
